@@ -19,6 +19,7 @@ function authentication(req, res, next) {
                     });
                 }
                 res.locals.user = user;
+                req.id = user.id;
                 return next();
             })
             .catch((err) => {

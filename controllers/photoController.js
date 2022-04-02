@@ -21,6 +21,15 @@ class photoController {
             .catch((err) => console.log(err));
     }
 
+    static getUsersProduct(req, res) {
+        const user_id = req.id;
+        Photo.findOne({
+                where: { UserId: user_id },
+            })
+            .then((result) => res.status(200).json(result))
+            .catch((err) => console.log(err));
+    }
+
     static getPhotosById(req, res) {
         let id = +req.params.id;
         Photo.findByPk(id)
@@ -34,11 +43,12 @@ class photoController {
 
     static createPhoto(req, res) {
         const { title, caption, image_url } = req.body;
-
+        const user_id = req.id;
         Photo.create({
-                title,
-                caption,
-                image_url,
+                title: title,
+                caption: caption,
+                image_url: image_url,
+                UserId: user_id,
             })
             .then((result) => {
                 res.status(200).json(result);
