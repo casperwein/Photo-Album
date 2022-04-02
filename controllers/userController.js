@@ -1,5 +1,5 @@
-const comparePassword = require("../helpers/bcrypt").comparePassword;
-const generateToken = require("../helpers/jwt").generateToken;
+const { comparePassword } = require("../helpers/bcrypt");
+const { generateToken } = require("../helpers/jwt");
 const { User } = require("../models");
 
 class UserController {
@@ -36,7 +36,7 @@ class UserController {
         const password = body.passwod;
         User.findOne({
                 where: {
-                    email: email,
+                    email,
                 },
             })
             .then((user) => {
@@ -46,19 +46,20 @@ class UserController {
                         devMessage: `User with email "${email}" not found `,
                     };
                 }
-                const isCorrect = comparePassword(password, user.password);
-                if (!isCorrect) {
-                    throw {
-                        name: "User login error",
-                        devMessage: `User's password with "${email}" does not match`,
-                    };
-                }
+                // const isCorrect = comparePassword(user.password, password);
+                // if (!isCorrect) {
+                //     throw {
+                //         name: "User login error",
+                //         devMessage: `User's password with "${email}" does not match`,
+                //     };
+                // }
                 let payload = {
                     id: user.id,
+                    username: user.username,
                     email: user.email,
                 };
                 const token = generateToken(payload);
-                return res.status(201).json({ token, user });
+                return res.status(201).json({ token });
             })
             .catch((error) => console.log(error));
     }
