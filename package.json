@@ -4,7 +4,9 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "NODE_ENV=test npx jest --runInBand --detectOpenHandles --forceExit",
+        "db:create:test": "NODE_ENV=test npx sequelize db:create",
+        "db:migrate:test": "NODE_ENV=test npx sequelize db:migrate"
     },
     "keywords": [],
     "author": "",
@@ -17,6 +19,7 @@
         "sequelize": "^6.17.0"
     },
     "devDependencies": {
-        "sequelize-cli": "^6.4.1"
+        "sequelize-cli": "^6.4.1",
+        "supertest": "^6.2.2"
     }
 }

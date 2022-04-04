@@ -21,6 +21,7 @@ class UserController {
                     message: "Registration Succes",
                     id: result.id,
                     username: result.username,
+                    email: result.email,
                 };
                 res.status(201).json(response);
             })
