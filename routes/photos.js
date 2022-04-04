@@ -12,9 +12,9 @@ router.get("/usersproducts", photoController.getUsersProduct);
 router.post("/create", photoController.createPhoto);
 router.get("/byUserId/:id", photoController.getPhotosByIdUser);
 
-// router.use(authorization);
+// router.use();
 
-router.put("/update/:id", photoController.updatePhotoById);
-router.delete("/delete/:id", photoController.deletePhotoById);
+router.put("/update/:id", authorization, photoController.updatePhotoById);
+router.delete("/delete/:id", authorization, photoController.deletePhotoById);
 
 module.exports = router;

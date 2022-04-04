@@ -2,7 +2,7 @@ const { Photo } = require("../models");
 
 function authorization(req, res, next) {
     const photoId = req.params.id;
-    const authorizationUser = res.locals.user;
+    const authorizationUser = req.user;
 
     Photo.findOne({
             where: {
@@ -27,7 +27,7 @@ function authorization(req, res, next) {
             }
         })
         .catch((err) => {
-            return res.status("500").json({ err });
+            return res.status("500").json(err);
         });
 }
 
