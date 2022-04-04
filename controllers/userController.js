@@ -21,7 +21,6 @@ class UserController {
                     message: "Registration Succes",
                     id: result.id,
                     username: result.username,
-                    passwod: result.password,
                 };
                 res.status(201).json(response);
             })
@@ -33,7 +32,7 @@ class UserController {
     static login(req, res) {
         const body = req.body;
         const email = body.email;
-        const password = body.passwod;
+        const password = body.password;
         User.findOne({
                 where: {
                     email,
@@ -41,25 +40,32 @@ class UserController {
             })
             .then((user) => {
                 if (!user) {
-                    throw {
+                    res.status(404).json({
                         name: "user login error",
                         devMessage: `User with email "${email}" not found `,
-                    };
+                    });
                 }
-                // const isCorrect = comparePassword(user.password, password);
-                // if (!isCorrect) {
-                //     throw {
-                //         name: "User login error",
-                //         devMessage: `User's password with "${email}" does not match`,
-                //     };
-                // }
+                const isCorrect = comparePassword(password, user.password);
+                if (!isCorrect) {
+                    res.status(404).json({
+                        name: "User login error",
+                        devMessage: `User's password with "${email}" does not match`,
+                    });
+                }
                 let payload = {
                     id: user.id,
                     username: user.username,
                     email: user.email,
                 };
                 const token = generateToken(payload);
-                return res.status(201).json({ token });
+                return res.status(201).json({
+                    token: token,
+                    user: {
+                        id: user.id,
+                        username: user.username,
+                        email: user.email,
+                    },
+                });
             })
             .catch((error) => console.log(error));
     }
